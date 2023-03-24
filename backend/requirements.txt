@@ -1,0 +1,3 @@
+fastapi==0.95.0
+langchain==0.0.122
+pydantic==1.10.7
