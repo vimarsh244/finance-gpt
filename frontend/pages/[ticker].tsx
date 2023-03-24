@@ -15,6 +15,7 @@ export default function TickerPage() {
   const router = useRouter()
   var ticker="BSE:"
   ticker += router.query['ticker']
+  ticker = ticker.toLocaleUpperCase()
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -201,7 +202,7 @@ export default function TickerPage() {
       setMode(PG_MODE as "search" | "chat");
     }
 
-    inputRef.current?.focus();
+    // inputRef.current?.focus();
   }, []);
 
   return (
@@ -210,7 +211,7 @@ export default function TickerPage() {
         <title>Finance GPT</title>
         <meta
           name="description"
-          content={`AI-powered search and chat for Paul Graham's essays.`}
+          content={`AI-powered search and chat for BSE Finance Data.`}
         />
         <meta
           name="viewport"
@@ -416,7 +417,7 @@ export default function TickerPage() {
               </div>
             ) : (
               <>
-              <div className="mt-6 text-center text-lg">{`AI-powered search & chat for Paul Graham's essays.`}</div>
+              <div className="mt-6 text-center text-lg">{`AI-powered search and chat for BSE Finance Data.`}</div>
                  </>
             )}
           </div>
