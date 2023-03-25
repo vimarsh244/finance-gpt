@@ -1,2 +1,1 @@
-# finance-gpt
-name not yet finalized 
+# Finance-gpt
