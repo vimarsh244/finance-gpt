@@ -29,6 +29,7 @@ const SymbolInfoNoSSR = dynamic(
 export default function TickerPage() {
 
   const router = useRouter()
+  const localticker=router.query['ticker']
   var ticker="BSE:"
   ticker += router.query['ticker']
   ticker = ticker.toLocaleUpperCase()
@@ -68,7 +69,7 @@ export default function TickerPage() {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ query, apiKey, matches: matchCount })
+      body: JSON.stringify({ query, apiKey, localticker, matches: matchCount })
     });
 
     if (!searchResponse.ok) {
@@ -333,7 +334,7 @@ export default function TickerPage() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
                   type="text"
-                  placeholder="How do I start a startup?"
+                  placeholder="What were the last reported current assets?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -374,7 +375,7 @@ export default function TickerPage() {
                   </>
                 )}
 
-                <div className="font-bold text-2xl mt-6">Passages</div>
+                <div className="font-bold text-2xl mt-6">References</div>
                 <div className="animate-pulse mt-2">
                   <div className="h-4 bg-gray-300 rounded"></div>
                   <div className="h-4 bg-gray-300 rounded mt-2"></div>
@@ -389,7 +390,7 @@ export default function TickerPage() {
                 <Answer text={answer} />
 
                 <div className="mt-6 mb-16">
-                  <div className="font-bold text-2xl">Passages</div>
+                  <div className="font-bold text-2xl">References</div>
 
                   {chunks.map((chunk, index) => (
                     <div key={index}>
@@ -416,7 +417,7 @@ export default function TickerPage() {
               </div>
             ) : chunks.length > 0 ? (
               <div className="mt-6 pb-16">
-                <div className="font-bold text-2xl">Passages</div>
+                <div className="font-bold text-2xl">References</div>
                 {chunks.map((chunk, index) => (
                   <div key={index}>
                     <div className="mt-4 border border-zinc-600 rounded-lg p-4">

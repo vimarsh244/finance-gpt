@@ -13,7 +13,8 @@ const handler = async (req: Request): Promise<Response> => {
       ticker: string;
     };
 
-    const input = query.replace(/\n/g, " ");
+    const input =query;
+    // const input = query.replace(/\n/g, " ");
     
 
     const res = await fetch("https://api.openai.com/v1/embeddings", {
@@ -37,20 +38,27 @@ const handler = async (req: Request): Promise<Response> => {
     //   match_count: matches
     // });
 
-    const data = await fetch("https://deployed.render.com/related", {
-      
+    // console.log(json + "   "+ embedding)
+
+    const data = await fetch("https://5000-vimarsh244-financegpt-i54aipkdx4v.ws-us92.gitpod.io/related", {
+      headers: {
+        "Content-Type": "application/json"
+      },
       method: "POST",
       body: JSON.stringify({
-        "ticker": ticker,
-        "ev":String(embedding)
+        "ticker": String(ticker),
+        "ve":("["+String(embedding)+"]")
       })
     });
 
 
-    // if (error) {
-    //   console.error(error);
-    //   return new Response("Error", { status: 500 });
-    // }
+    console.log("["+String(embedding)+"]")
+    console.log(data)
+
+    if (!data) {
+      console.error(data);
+      return new Response("Error", { status: 500 });
+    }
 
     return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {

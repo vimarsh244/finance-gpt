@@ -14,9 +14,6 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 
 
 
-
-
-
 # creating a Flask app
 app = Flask(__name__)
   
