@@ -4,19 +4,6 @@
 	<title>FinanceGPT: {{ path_name }}</title>
 
 
-	<!-- <script>
-		// Check if the OpenAI API key is already stored in localStorage
-		if (localStorage.getItem('openai_api_key')) {
-			// If it is, set the value of the API key input field to the stored value
-			document.getElementById('openai-api-key').value = localStorage.getItem('openai_api_key');
-		}
-
-		// Save the OpenAI API key to localStorage when the form is submitted
-		document.getElementById('inputform').addEventListener('submit', function(event) {
-			var openaiApiKey = document.getElementById('openai-api-key').value;
-			localStorage.setItem('openai_api_key', openaiApiKey);
-		});
-	</script> -->
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
 
@@ -27,7 +14,7 @@
 <body>
 
 	<h1>Ask Questions for {{ path_name }}?</h1>
-
+	<h4><a href = "/">Home</a></h4>
 	<br>
 	<iframe title="market-overview" width = "100%" height = "200%" src= "{{ urlforprice }}"></iframe>
 	<br>
@@ -43,7 +30,7 @@
 
 	<h4> Question Asked</h4>
 		<p>{{ questionasked }}</p>
-	<br>
+	
 	<h4> Answer</h4>
 	
 	<p>{{ answer_received }}</p>

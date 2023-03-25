@@ -56,7 +56,7 @@ def home():
 
 def relatedwords(ticker, vembeddings):
     
-    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    embeddings = OpenAIEmbeddings()
     print(str(ticker))
     new_db = FAISS.load_local(ticker, embeddings)
         # ar = literal_eval(vector)
