@@ -38,7 +38,7 @@ def home():
         vector = temp["ve"]
         ticker = temp["ticker"]
 
-        embeddings = OpenAIEmbeddings(openai_api_key="sk-asafdoesntreallymatteryft652174u1y")
+        embeddings = OpenAIEmbeddings(openai.api_key)
         print(str(ticker))
         new_db = FAISS.load_local(str(ticker), embeddings)
         ar = literal_eval(vector)
@@ -53,14 +53,53 @@ def home():
 
 
         return jsonify({'data': data})
+
+def relatedwords(ticker, vembeddings):
+    
+    embeddings = OpenAIEmbeddings(openai_api_key="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")
+    print(str(ticker))
+    new_db = FAISS.load_local(ticker, embeddings)
+        # ar = literal_eval(vector)
+    docs_and_scores = new_db.similarity_search_by_vector(vembeddings)
+    size = len(docs_and_scores)
+    data = ""
+    for i in range(0,size):
+        data+=(docs_and_scores[i].page_content + "\n\n")
+
+
+    print(data)
+
+
+    return data
   
+
+def completion(context):
+    completion = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    temperature = 0,
+    messages=[
+        {
+          "role": "system",
+          "content": "You are a financial assistant that VERY ACCURATELY and CONCISELY answers queries using publicly filled annual reports of publicly traded companies. Use the CONTEXT provided to form your answer. Keep your answer under 5 sentences. Be accurate, helpful, concise, and clear, while performing accurate mathematical calculations."
+        },
+        {
+          "role": "user",
+          "content": context
+        }
+    ]
+    )
+
+    return (completion.choices[0].message["content"])
+
+
+
 def embeddingsgenerate(embeddingsof):
     
     embeddings = openai.Embedding.create(
         model="text-embedding-ada-002",
         input=embeddingsof
     )
-    return embeddings["data"].embedding
+    return embeddings["data"][0]["embedding"]
 
 
 @app.route('/generate_embeddings', methods= ['GET', 'POST'])
@@ -84,12 +123,19 @@ def answer_question(path_name):
     if request.method == 'POST':
         # User submitted a question, so process it and get an answer from OpenAI
         question = request.form['question']
-        openai_api_key = request.form['openai_api_key']
+        # openai_api_key = request.form['openai_api_key']
         prompt = f"{question}"
 
         embeddings_recieved = embeddingsgenerate(question)
+
+        context = relatedwords(path_name, embeddings_recieved)
+
+        questionforgpt = "CONTEXT\n\n" + context + "\nQUESTION\n" + prompt
+
+        answerfromgpt = completion(questionforgpt)
+        print(answerfromgpt)
         
-        return render_template('chat.html', path_name=path_name, answer=prompt, urlforprice=urlforprice, embeddings_recieved = embeddings_recieved)
+        return render_template('chat.html', path_name=path_name, questionasked=prompt, urlforprice=urlforprice, embeddings_recieved = context, answer_received = answerfromgpt)
 
     else:
         answer = "not yet used"
@@ -97,6 +143,9 @@ def answer_question(path_name):
         return render_template('chat.html', path_name=path_name, answer=answer,urlforprice=urlforprice)
   
 
+@app.route('/',methods=['GET'])
+def homepage():
+    return render_template('home.html')
 
 
 # driver function

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>{{ path_name }}</title>
+	<title>FinanceGPT: {{ path_name }}</title>
 
 
 	<!-- <script>
@@ -36,20 +36,19 @@
 	<h1>Ask a Question</h1>
 	<form id="inputform" method="post" action={{path_name}}>
 
-		<label for="openai-api-key">OpenAI API Key:</label><br>
-		<input type="text" id="openai-api-key" name="openai_api_key"><br><br>
-
-
 		<label for="question">Question:</label><br>
 		<input type="text" id="question" name="question"><br><br>
 		<input type="submit" value="Submit">
 	</form>
 
-	<h2> Relevant Parts</h2>
-		<p>{{ relevant }}</p>
-
-	<p>{{ answer }}</p>
-
+	<h4> Question Asked</h4>
+		<p>{{ questionasked }}</p>
+	<br>
+	<h4> Answer</h4>
+	
+	<p>{{ answer_received }}</p>
+	<br>
+	<h4>References</h4>
 	<p>
 		{{ embeddings_recieved }}
 	</p>
