@@ -3,7 +3,6 @@
 from flask import Flask, jsonify, request, render_template
   
 
-from fastapi import FastAPI
 from pydantic import BaseModel
 from ast import literal_eval
 import os
