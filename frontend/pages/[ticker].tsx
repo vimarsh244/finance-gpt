@@ -8,32 +8,34 @@ import { IconArrowRight, IconExternalLink, IconSearch } from "@tabler/icons-reac
 import endent from "endent";
 import Head from "next/head";
 import { KeyboardEvent, useEffect, useRef, useState ,  } from "react";
+import { loadGetInitialProps } from "next/dist/shared/lib/utils";
+import { resourceLimits } from "worker_threads";
 // import { SymbolInfo } from "react-ts-tradingview-widgets";
 
-import dynamic from "next/dynamic";
-const SymbolOverviewNoSSR = dynamic(
-  () => import("react-ts-tradingview-widgets").then((w) => w.SymbolOverview),
-  {
-    ssr: false,
-  }
-);
-
-const SymbolInfoNoSSR = dynamic(
-  () => import("react-ts-tradingview-widgets").then((w) => w.SymbolInfo),
-  {
-    ssr: false,
-  }
-);
 
 
 export default function TickerPage() {
 
   const router = useRouter()
-  const localticker=router.query['ticker']
+
+  // const [ticker, setTicker] = useState<string>("");
+
+  
   var ticker="BSE:"
   ticker += router.query['ticker']
-  ticker = ticker.toLocaleUpperCase()
+  // ticker += router.pathname
+
+
+  // console.log(window.location.href)
+
+  // static async getInitialProps(context){
+
+  
   const tradviewurl =  "https://s.tradingview.com/embed-widget/symbol-info/?locale=en&symbol="+ticker
+
+
+
+  console.log((tradviewurl))
 
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -62,7 +64,14 @@ export default function TickerPage() {
     setAnswer("");
     setChunks([]);
 
+
+    // setTicker("BSE:"+router.query['ticker'])
+    // setTicker(ticker.toLocaleUpperCase())
+
     setLoading(true);
+
+    var localticker=router.query['ticker']
+
 
     const searchResponse = await fetch("/api/search", {
       method: "POST",
@@ -124,7 +133,7 @@ export default function TickerPage() {
     const prompt = endent`
     Use the following passages to provide an answer to the query: "${query}"
 
-    ${results?.map((d: any) => d.content).join("\n\n")}
+    ${results}
     `;
 
     const answerResponse = await fetch("/api/answer", {
@@ -280,7 +289,7 @@ export default function TickerPage() {
                 </div>
 
                 <div className="mt-2">
-                  <div>Passage Count</div>
+                  <div>References Count</div>
                   <input
                     type="number"
                     min={1}
@@ -395,8 +404,8 @@ export default function TickerPage() {
                   {chunks.map((chunk, index) => (
                     <div key={index}>
                       <div className="mt-4 border border-zinc-600 rounded-lg p-4">
-                        <div className="flex justify-between">
-                          <div>
+                        {/* <div className="flex justify-between">
+                           <div>
                             <div className="font-bold text-xl">{chunk.essay_title}</div>
                             <div className="mt-1 font-bold text-sm">{chunk.essay_date}</div>
                           </div>
@@ -408,8 +417,8 @@ export default function TickerPage() {
                           >
                             <IconExternalLink />
                           </a>
-                        </div>
-                        <div className="mt-2">{chunk.content}</div>
+                        </div>  */}
+                        <div className="mt-2">{ticker}</div>
                       </div>
                     </div>
                   ))}

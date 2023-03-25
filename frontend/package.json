@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@next/font": "^13.2.3",
+    "@nextui-org/react": "^1.0.0-beta.12",
     "@tabler/icons-react": "^2.4.0",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",

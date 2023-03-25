@@ -7,7 +7,23 @@ import endent from "endent";
 import Head from "next/head";
 import { KeyboardEvent, useEffect, useRef, useState } from "react";
 
+
+
+// import { useEffect, useRef, useState } from "react";
+
 export default function Home() {
+  
+  var ticker="BSE:"
+
+
+  ticker = ticker.toLocaleUpperCase()
+  const tradviewurl =  "https://s.tradingview.com/embed-widget/symbol-info/?locale=en&symbol="+ticker
+
+
+
+  console.log((tradviewurl))
+
+
   const inputRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState<string>("");
@@ -36,12 +52,16 @@ export default function Home() {
 
     setLoading(true);
 
+    // var localticker=router.query['ticker']
+
+    const localticker = "tatasteel"
+
     const searchResponse = await fetch("/api/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ query, apiKey, matches: matchCount })
+      body: JSON.stringify({ query, apiKey, localticker })
     });
 
     if (!searchResponse.ok) {
@@ -193,7 +213,7 @@ export default function Home() {
       setMode(PG_MODE as "search" | "chat");
     }
 
-    inputRef.current?.focus();
+    // inputRef.current?.focus();
   }, []);
 
   return (
@@ -216,6 +236,18 @@ export default function Home() {
 
       <div className="flex flex-col h-screen">
         <Navbar />
+        
+        <div className="place-content-center lg:ml-40 lg:mr-40 mt-5 mb-5">
+
+        {/* <SymbolInfoNoSSR colorTheme="light" autosize symbol={ticker}></SymbolInfoNoSSR> */}
+
+        <iframe title="market-overview" style={{ height: "120%", width: "100%" }} src={tradviewurl}></iframe>
+
+
+          {/* <SymbolInfo colorTheme="light" autosize symbol={ticker}></SymbolInfo> */}
+          </div>
+
+
         <div className="flex-1 overflow-auto">
           <div className="mx-auto flex h-full w-full max-w-[750px] flex-col items-center px-3 pt-4 sm:pt-8">
             <button
@@ -294,7 +326,7 @@ export default function Home() {
                   ref={inputRef}
                   className="h-12 w-full rounded-full border border-zinc-600 pr-12 pl-11 focus:border-zinc-800 focus:outline-none focus:ring-1 focus:ring-zinc-800 sm:h-16 sm:py-2 sm:pr-16 sm:pl-16 sm:text-lg"
                   type="text"
-                  placeholder="How do I start a startup?"
+                  placeholder="What were the last reported current assets?"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   onKeyDown={handleKeyDown}
@@ -335,7 +367,7 @@ export default function Home() {
                   </>
                 )}
 
-                <div className="font-bold text-2xl mt-6">Passages</div>
+                <div className="font-bold text-2xl mt-6">References</div>
                 <div className="animate-pulse mt-2">
                   <div className="h-4 bg-gray-300 rounded"></div>
                   <div className="h-4 bg-gray-300 rounded mt-2"></div>
@@ -350,7 +382,7 @@ export default function Home() {
                 <Answer text={answer} />
 
                 <div className="mt-6 mb-16">
-                  <div className="font-bold text-2xl">Passages</div>
+                  <div className="font-bold text-2xl">References</div>
 
                   {chunks.map((chunk, index) => (
                     <div key={index}>
@@ -377,7 +409,7 @@ export default function Home() {
               </div>
             ) : chunks.length > 0 ? (
               <div className="mt-6 pb-16">
-                <div className="font-bold text-2xl">Passages</div>
+                <div className="font-bold text-2xl">References</div>
                 {chunks.map((chunk, index) => (
                   <div key={index}>
                     <div className="mt-4 border border-zinc-600 rounded-lg p-4">
@@ -401,10 +433,14 @@ export default function Home() {
                 ))}
               </div>
             ) : (
+              <>
               <div className="mt-6 text-center text-lg">{`AI-powered search and chat for BSE Finance Data.`}</div>
+                 </>
             )}
           </div>
         </div>
+        <br></br>
+        <h1>Ticker symbol : {ticker}</h1>
         <Footer />
       </div>
     </>
