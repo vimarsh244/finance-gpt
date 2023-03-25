@@ -10,20 +10,11 @@ export const Footer: FC = () => {
         Created by
         <a
           className="hover:opacity-50 mx-1"
-          href="https://twitter.com/mckaywrigley"
+          href=""
           target="_blank"
           rel="noreferrer"
         >
-          XYZ
-        </a>
-        based on the OPENAI
-        <a
-          className="hover:opacity-50 ml-1"
-          href="https://twitter.com/paulg"
-          target="_blank"
-          rel="noreferrer"
-        >
-          XYZ
+          $core_dumpers
         </a>
         .
       </div>
