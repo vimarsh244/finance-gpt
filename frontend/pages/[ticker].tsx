@@ -8,7 +8,23 @@ import { IconArrowRight, IconExternalLink, IconSearch } from "@tabler/icons-reac
 import endent from "endent";
 import Head from "next/head";
 import { KeyboardEvent, useEffect, useRef, useState ,  } from "react";
-import { SymbolInfo } from "react-ts-tradingview-widgets";
+// import { SymbolInfo } from "react-ts-tradingview-widgets";
+
+import dynamic from "next/dynamic";
+const SymbolOverviewNoSSR = dynamic(
+  () => import("react-ts-tradingview-widgets").then((w) => w.SymbolOverview),
+  {
+    ssr: false,
+  }
+);
+
+const SymbolInfoNoSSR = dynamic(
+  () => import("react-ts-tradingview-widgets").then((w) => w.SymbolInfo),
+  {
+    ssr: false,
+  }
+);
+
 
 export default function TickerPage() {
 
@@ -16,6 +32,8 @@ export default function TickerPage() {
   var ticker="BSE:"
   ticker += router.query['ticker']
   ticker = ticker.toLocaleUpperCase()
+  const tradviewurl =  "https://s.tradingview.com/embed-widget/symbol-info/?locale=en&symbol="+ticker
+
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -226,8 +244,14 @@ export default function TickerPage() {
       <div className="flex flex-col h-screen">
         <Navbar />
         
-        <div className="place-content-center lg:ml-40 lg:mr-40 mt-10">
-          <SymbolInfo colorTheme="light" autosize symbol={ticker}></SymbolInfo>
+        <div className="place-content-center lg:ml-40 lg:mr-40 mt-5 mb-5">
+
+        {/* <SymbolInfoNoSSR colorTheme="light" autosize symbol={ticker}></SymbolInfoNoSSR> */}
+
+        <iframe title="market-overview" style={{ height: "120%", width: "100%" }} src={tradviewurl}></iframe>
+
+
+          {/* <SymbolInfo colorTheme="light" autosize symbol={ticker}></SymbolInfo> */}
           </div>
 
 
