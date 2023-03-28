@@ -1,7 +1,7 @@
 # Using flask to make an api
 # import necessary libraries and functions
 from flask import Flask, jsonify, request, render_template
-  
+
 
 from pydantic import BaseModel
 from ast import literal_eval
